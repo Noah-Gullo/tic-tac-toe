@@ -1,42 +1,52 @@
-const Gameboard = (function () {
-    let board = [false, false, false, 
-                   false, false, false,
-                   false, false, false];
-
-    const markIndex = (index) => {
-        board[index] = true; 
+const Gameboard = (function () { 
+    let board = ["e", "e", "e", 
+                 "e", "e", "e",
+                 "e", "e", "e"];   
+    const markIndex = (index, player) => {
+        if(index >= 0 && index < 9 &&
+           (board[index] != "x" && board[index] != "o")){
+            if(player == "P0"){
+                board[index] = "x";
+            }else if(player == "P1"){
+                board[index] = "o";
+            }
+        }
     }
 
     const clearBoard = () => {
-        board = [false, false, false,
-                 false, false, false,
-                 false, false, false];
+        for(let i = 0; i < board.length; i++){
+            board[i] = false;
+        }
     }
 
-    return {board, markIndex, clearBoard};
+    const printBoard = () => {
+        for(let i = 0; i < board.length; i += 3){
+            console.log(board.slice(i, i + 3).join(" | "));
+            console.log("");
+        }
+    }
+
+    const checkWin = () => {
+
+    }
+
+    return {markIndex, clearBoard, printBoard, checkWin};
 })
 
-function createPlayer(inputName){
+function createPlayer(inputName, id){
     const name = inputName;
     let wins = 0;
     
     const getName = () => name;
+    const getId = () => "P" + id;
     const getWins = () => wins;
     const addWin = () => {wins += 1;}
     const resetWins = () => {wins = 0;}
-    return {getName, getWins, addWin, resetWins}
+
+    getId();
+    return {getName, getId, getWins, addWin, resetWins}
 }
 
-const g1 = new Gameboard();
-
-const player1 = createPlayer("P1");
-const player2 = createPlayer("P2");
-
-console.log(player1.getName());
-console.log(player2.getName());
-player1.addWin();
-console.log(player1.getWins());
-player1.addWin();
-console.log(player1.getWins());
-player1.resetWins();
-console.log(player1.getWins());
+const board = new Gameboard;
+const p0 = createPlayer("Jane Doe", 0);
+const p1 = createPlayer("John Doe", 1);
