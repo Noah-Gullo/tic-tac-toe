@@ -1,36 +1,37 @@
 const Gameboard = (function () { 
-    let board = ["e", "e", "e", 
-                 "e", "e", "e",
-                 "e", "e", "e"];   
-    const markIndex = (index, player) => {
-        if(index >= 0 && index < 9 &&
-           (board[index] != "x" && board[index] != "o")){
+    let board = [["e", "e", "e"], 
+                 ["e", "e", "e"],
+                 ["e", "e", "e"]];   
+    const markSpot = (row, col, player) => {
+        if(row >= 0 && row < board.length &&
+           (col >= 0 && row < board.length) &&
+           (board[row][col] != "x" && board[row][col] != "o")){
             if(player == "P0"){
-                board[index] = "x";
+                board[row][col] = "x";
             }else if(player == "P1"){
-                board[index] = "o";
+                board[row][col] = "o";
+            }
+        }
+        checkWin();
+    }
+
+    const clearBoard = () => {
+        for(let row = 0; row < board.length; row++){
+            for(let col = row; col < board.length; col++){
+                board[row][col] = "e";
             }
         }
     }
 
-    const clearBoard = () => {
-        for(let i = 0; i < board.length; i++){
-            board[i] = false;
-        }
-    }
-
     const printBoard = () => {
-        for(let i = 0; i < board.length; i += 3){
-            console.log(board.slice(i, i + 3).join(" | "));
-            console.log("");
-        }
+        console.log(board.map(row => row.join(' ')).join('\n'));
     }
 
     const checkWin = () => {
 
     }
 
-    return {markIndex, clearBoard, printBoard, checkWin};
+    return {markSpot, clearBoard, printBoard};
 })
 
 function createPlayer(inputName, id){
@@ -50,3 +51,9 @@ function createPlayer(inputName, id){
 const board = new Gameboard;
 const p0 = createPlayer("Jane Doe", 0);
 const p1 = createPlayer("John Doe", 1);
+
+board.markSpot(0, 0, p0.getId());
+board.markSpot(0, 1, p0.getId());
+board.markSpot(0, 2, p0.getId());
+board.markSpot(2, 1, p1.getId());
+board.printBoard();
