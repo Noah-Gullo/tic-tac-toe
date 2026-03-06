@@ -186,16 +186,21 @@ const board = new Gameboard;
 const p1 = createPlayer("Jane Doe", 1);
 const p2 = createPlayer("John Doe", 2);
 
+
+//Check if correctly finds a tie
 board.markSpot(0, 0, p1.getId());
 board.markSpot(0, 1, p2.getId());
 board.markSpot(1, 0, p1.getId());
 board.markSpot(1, 1, p2.getId());
+board.markSpot(2, 1, p1.getId());
+board.markSpot(2, 0, p2.getId());
+board.markSpot(0, 2, p1.getId());
+board.markSpot(1, 2, p2.getId());
+board.markSpot(2, 2, p1.getId());
 
-
-board.clearBoard();
 board.printBoard();
-
-// Check if winning on the last win correctly detects a win instead of a tie.
+board.clearBoard();
+//Check if winning on the last win is marked as a win instead of a tie
 board.markSpot(0, 1, p2.getId());
 board.markSpot(0, 0, p1.getId());
 board.markSpot(1, 0, p2.getId());
