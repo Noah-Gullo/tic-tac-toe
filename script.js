@@ -5,6 +5,8 @@ const Gameboard = (function () {
     let p1Win = false;
     let p2Win = false;
 
+    const getBoard = () => {return board};
+
     const markSpot = (row, col, player) => {
         if((row >= 0 && row < board.length) &&
            (col >= 0 && col < board.length) && 
@@ -171,7 +173,14 @@ const Gameboard = (function () {
         checkTie();
     }
 
-    return {markSpot, clearBoard, printBoard};
+    return {getBoard, markSpot, clearBoard, printBoard};
+})
+
+const RenderHandler = (function()  {
+    const displayBoard = (board) => {
+        console.log(board.map(row => row.join(' ')).join('\n'));
+    }
+    return {displayBoard};
 })
 
 function createPlayer(inputName, id){
@@ -189,25 +198,9 @@ function createPlayer(inputName, id){
 }
 
 const board = new Gameboard;
+const render = new RenderHandler; 
 const p1 = createPlayer("Jane Doe", 1);
 const p2 = createPlayer("John Doe", 2);
 
-board.markSpot(0, 0, p1.getId());
-board.markSpot(0, 1, p2.getId());
-board.markSpot(1, 0, p1.getId());
-board.markSpot(1, 1, p2.getId());
-board.markSpot(2, 1, p1.getId());
-board.markSpot(2, 0, p2.getId());
-board.markSpot(0, 2, p1.getId());
-board.markSpot(1, 2, p2.getId());
-board.markSpot(2, 2, p1.getId());
-
-board.markSpot(0, 1, p2.getId());
-board.markSpot(0, 0, p1.getId());
-board.markSpot(1, 0, p2.getId());
-board.markSpot(0, 2, p1.getId());
-board.markSpot(2, 2, p2.getId());
 board.markSpot(1, 1, p1.getId());
-board.markSpot(1, 2, p1.getId());
-board.markSpot(2, 1, p2.getId());
-board.markSpot(2, 0, p1.getId());
+render.displayBoard(board.getBoard());
