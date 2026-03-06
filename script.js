@@ -24,10 +24,12 @@ const Gameboard = (function () {
                 board[row][col] = "e";
             }
         }
+        return;
     }
 
     const printBoard = () => {
         console.log(board.map(row => row.join(' ')).join('\n'));
+        return;
     }
 
     const checkHorizontalWin = () => {
@@ -130,15 +132,19 @@ const Gameboard = (function () {
                 }
             }
         }
+        printBoard();
         console.log("Tie detected");
+        clearBoard();
     }
 
     const printWin = () => {
+        printBoard();
         if(p1Win){
             console.log("Player 1 won.")
         }else if(p2Win){
             console.log("Player 2 won.");
         }
+        clearBoard();
         return;
     }
 
@@ -186,8 +192,6 @@ const board = new Gameboard;
 const p1 = createPlayer("Jane Doe", 1);
 const p2 = createPlayer("John Doe", 2);
 
-
-//Check if correctly finds a tie
 board.markSpot(0, 0, p1.getId());
 board.markSpot(0, 1, p2.getId());
 board.markSpot(1, 0, p1.getId());
@@ -198,9 +202,6 @@ board.markSpot(0, 2, p1.getId());
 board.markSpot(1, 2, p2.getId());
 board.markSpot(2, 2, p1.getId());
 
-board.printBoard();
-board.clearBoard();
-//Check if winning on the last win is marked as a win instead of a tie
 board.markSpot(0, 1, p2.getId());
 board.markSpot(0, 0, p1.getId());
 board.markSpot(1, 0, p2.getId());
@@ -210,4 +211,3 @@ board.markSpot(1, 1, p1.getId());
 board.markSpot(1, 2, p1.getId());
 board.markSpot(2, 1, p2.getId());
 board.markSpot(2, 0, p1.getId());
-board.printBoard();
