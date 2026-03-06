@@ -7,7 +7,7 @@ const Gameboard = (function () {
 
     const markSpot = (row, col, player) => {
         if((row >= 0 && row < board.length) &&
-           (col >= 0 && row < board.length) && 
+           (col >= 0 && col < board.length) && 
            (board[row][col] != "x" && board[row][col] != "o")){
             if(player == "P1"){
                 board[row][col] = "x";
