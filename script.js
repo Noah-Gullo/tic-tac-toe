@@ -29,11 +29,6 @@ const Gameboard = (function () {
         return;
     }
 
-    const printBoard = () => {
-        console.log(board.map(row => row.join(' ')).join('\n'));
-        return;
-    }
-
     const checkHorizontalWin = () => {
         for(let i = 0; i < board.length; i++){
             p1Win = true;
@@ -134,13 +129,11 @@ const Gameboard = (function () {
                 }
             }
         }
-        printBoard();
         console.log("Tie detected");
         clearBoard();
     }
 
     const printWin = () => {
-        printBoard();
         if(p1Win){
             console.log("Player 1 won.")
         }else if(p2Win){
@@ -173,11 +166,20 @@ const Gameboard = (function () {
         checkTie();
     }
 
-    return {getBoard, markSpot, clearBoard, printBoard};
+    return {getBoard, markSpot, clearBoard};
 })
 
 const RenderHandler = (function()  {
     const displayBoard = (board) => {
+        const board_grid = document.getElementById("board-grid");
+        for(let i = 0; i < board.length; i++){
+            for(let j = 0; j < board.length; j++){
+                const space = document.createElement("div");
+                space.setAttribute("class", "row" + i);
+                space.textContent = board[i][j];
+                board_grid.appendChild(space);
+            }
+        }
         console.log(board.map(row => row.join(' ')).join('\n'));
     }
     return {displayBoard};
@@ -202,5 +204,6 @@ const render = new RenderHandler;
 const p1 = createPlayer("Jane Doe", 1);
 const p2 = createPlayer("John Doe", 2);
 
+board.markSpot(0, 2, p2.getId());
 board.markSpot(1, 1, p1.getId());
 render.displayBoard(board.getBoard());

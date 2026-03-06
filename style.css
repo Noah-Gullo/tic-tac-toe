@@ -31,14 +31,14 @@ h1{
     grid-auto-flow: row;
 }
 
-#board-grid .first-row{
+#board-grid .row0{
     grid-row: 1 / 2;
 }
 
-#board-grid .second-row{
+#board-grid .row1{
     grid-row: 2 / 3;
 }
 
-#board-grid .third-row{
+#board-grid .row2{
     grid-row: 3 / 4;
 }
