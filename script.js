@@ -184,8 +184,14 @@ const RenderHandler = (function()  {
                 if(board[i][j] != "e"){
                     space.textContent = board[i][j];
                 }else{
+                    space.setAttribute("class", "row" + i + " unmarked")
                     space.textContent = " ";
                 }
+
+                space.addEventListener("click", () =>{
+                        console.log(space.textContent);
+                })
+
                 board_grid.appendChild(space);
             }
         }
@@ -214,11 +220,11 @@ const p2 = createPlayer("John Doe", 2);
 render.displayBoard(board.getBoard());
 board.markSpot(0,0,p1.getId());
 board.markSpot(0,1,p2.getId());
-board.markSpot(0,2,p1.getId());
-board.markSpot(1,0,p2.getId());
-board.markSpot(1,1,p1.getId());
-board.markSpot(1,2,p2.getId());
+//board.markSpot(0,2,p1.getId());
+//board.markSpot(1,0,p2.getId());
+board.markSpot(1,1,p2.getId());
+board.markSpot(1,2,p1.getId());
 board.markSpot(2,0,p1.getId());
-board.markSpot(2,1,p2.getId());
-board.markSpot(2,2,p2.getId());
+board.markSpot(2,1,p1.getId());
+//board.markSpot(2,2,p2.getId());
 render.displayBoard(board.getBoard());
