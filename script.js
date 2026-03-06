@@ -130,7 +130,6 @@ const Gameboard = (function () {
             }
         }
         console.log("Tie detected");
-        clearBoard();
     }
 
     const printWin = () => {
@@ -139,7 +138,6 @@ const Gameboard = (function () {
         }else if(p2Win){
             console.log("Player 2 won.");
         }
-        clearBoard();
         return;
     }
 
@@ -172,15 +170,25 @@ const Gameboard = (function () {
 const RenderHandler = (function()  {
     const displayBoard = (board) => {
         const board_grid = document.getElementById("board-grid");
+        
+        if(board_grid.childElementCount > 0){
+            while(board_grid.firstChild){
+                board_grid.removeChild(board_grid.lastChild);
+            }
+        }
+
         for(let i = 0; i < board.length; i++){
             for(let j = 0; j < board.length; j++){
                 const space = document.createElement("div");
                 space.setAttribute("class", "row" + i);
-                space.textContent = board[i][j];
+                if(board[i][j] != "e"){
+                    space.textContent = board[i][j];
+                }else{
+                    space.textContent = " ";
+                }
                 board_grid.appendChild(space);
             }
         }
-        console.log(board.map(row => row.join(' ')).join('\n'));
     }
     return {displayBoard};
 })
@@ -203,7 +211,14 @@ const board = new Gameboard;
 const render = new RenderHandler; 
 const p1 = createPlayer("Jane Doe", 1);
 const p2 = createPlayer("John Doe", 2);
-
-board.markSpot(0, 2, p2.getId());
-board.markSpot(1, 1, p1.getId());
+render.displayBoard(board.getBoard());
+board.markSpot(0,0,p1.getId());
+board.markSpot(0,1,p2.getId());
+board.markSpot(0,2,p1.getId());
+board.markSpot(1,0,p2.getId());
+board.markSpot(1,1,p1.getId());
+board.markSpot(1,2,p2.getId());
+board.markSpot(2,0,p1.getId());
+board.markSpot(2,1,p2.getId());
+board.markSpot(2,2,p2.getId());
 render.displayBoard(board.getBoard());
