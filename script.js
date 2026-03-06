@@ -20,7 +20,7 @@ const Gameboard = (function () {
 
     const clearBoard = () => {
         for(let row = 0; row < board.length; row++){
-            for(let col = row; col < board.length; col++){
+            for(let col = 0; col < board.length; col++){
                 board[row][col] = "e";
             }
         }
@@ -122,6 +122,17 @@ const Gameboard = (function () {
         return false; 
     }
 
+    const checkTie = () => {
+        for(let i = 0; i < board.length; i++){
+            for(let j = 0; j < board.length; j++){
+                if(board[i][j] == "e"){
+                    return;
+                }
+            }
+        }
+        console.log("Tie detected");
+    }
+
     const printWin = () => {
         if(p1Win){
             console.log("Player 1 won.")
@@ -150,6 +161,8 @@ const Gameboard = (function () {
             printWin();
             return;
         }
+
+        checkTie();
     }
 
     return {markSpot, clearBoard, printBoard};
@@ -173,7 +186,23 @@ const board = new Gameboard;
 const p1 = createPlayer("Jane Doe", 1);
 const p2 = createPlayer("John Doe", 2);
 
+board.markSpot(0, 0, p1.getId());
+board.markSpot(0, 1, p2.getId());
+board.markSpot(1, 0, p1.getId());
+board.markSpot(1, 1, p2.getId());
+
+
+board.clearBoard();
+board.printBoard();
+
+// Check if winning on the last win correctly detects a win instead of a tie.
+board.markSpot(0, 1, p2.getId());
+board.markSpot(0, 0, p1.getId());
+board.markSpot(1, 0, p2.getId());
 board.markSpot(0, 2, p1.getId());
+board.markSpot(2, 2, p2.getId());
 board.markSpot(1, 1, p1.getId());
+board.markSpot(1, 2, p1.getId());
+board.markSpot(2, 1, p2.getId());
 board.markSpot(2, 0, p1.getId());
 board.printBoard();
