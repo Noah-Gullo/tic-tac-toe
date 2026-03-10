@@ -23,6 +23,7 @@ const Gameboard = (function () {
     }
 
     const clearBoard = () => {
+        p1Turn = true;
         for(let row = 0; row < board.length; row++){
             for(let col = 0; col < board.length; col++){
                 board[row][col] = "e";
@@ -139,12 +140,13 @@ const Gameboard = (function () {
     const printWin = () => {
         if(p1Win){
             statustext.textContent = "Player 1 wins!";
+            statustext.style.color = "blue";
         }else if(p2Win){
             statustext.textContent = "Player 2 wins!";
+            statustext.style.color = "red";
         }
         clearBoard();
         render.displayBoard(board);
-        return;
     }
 
     const checkWin = () => {
@@ -171,6 +173,10 @@ const Gameboard = (function () {
     }
 
     return {getBoard, markSpot, clearBoard};
+})
+
+const StateManager = (function () {
+
 })
 
 const RenderHandler = (function()  {
@@ -200,12 +206,18 @@ const RenderHandler = (function()  {
                        (board[i][j] != "x" && gameboard.getBoard()[i][j] != "o")){
                         if(p1Turn){
                             space.textContent = "x";
+                            space.style.color = "blue";
+                            turntext.textContent = p2.getName() + "'s turn.";
+                            turntext.style.color = "red"
                             gameboard.markSpot(i, j, p1.getId());
                         }else{
                             space.textContent = "o";
+                            space.style.color = "red";
+                            turntext.textContent = p1.getName() + "'s turn.";
+                            turntext.style.color = "blue";
                             gameboard.markSpot(i, j, p2.getId());
                         }    
-                    p1Turn = !p1Turn
+                        p1Turn = !p1Turn
                     space.setAttribute("class", "row" + i);
                     }
                 })
@@ -217,7 +229,7 @@ const RenderHandler = (function()  {
     return {displayBoard};
 })
 
-function createPlayer(inputName, id){
+function createPlayer(inputName, id, symbol){
     const name = inputName;
     let wins = 0;
     
@@ -233,9 +245,17 @@ function createPlayer(inputName, id){
 
 const gameboard = new Gameboard;
 const render = new RenderHandler; 
-const p1 = createPlayer("Jane Doe", 1);
-const p2 = createPlayer("John Doe", 2);
+const statemanager = new StateManager;
+
+const p1 = createPlayer("Player 1", 1);
+const p2 = createPlayer("Player 2", 2);
+
 const wrapper = document.getElementById("wrapper");
 const statustext = document.createElement("p");
+const turntext = document.createElement("p");
+turntext.textContent = p1.getName() + "'s turn.";
+turntext.style.color = "blue";
 wrapper.appendChild(statustext);
+wrapper.appendChild(turntext);
+
 render.displayBoard(gameboard.getBoard());
