@@ -131,6 +131,8 @@ const Gameboard = (function () {
                 }
             }
         }
+        clearBoard();
+        render.displayBoard(board);
         console.log("Tie detected");
     }
 
@@ -191,15 +193,19 @@ const RenderHandler = (function()  {
                 }
 
                 space.addEventListener("click", () =>{
-                    if(p1Turn){
-                        space.textContent = "x";
-                        gameboard.markSpot(i, j, p1.getId());
-                    }else{
-                        space.textContent = "o";
-                        gameboard.markSpot(i, j, p2.getId());
-                    }    
+                    if((i >= 0 && i < board.length) &&
+                       (j>= 0 && j < board.length) && 
+                       (board[i][j] != "x" && gameboard.getBoard()[i][j] != "o")){
+                        if(p1Turn){
+                            space.textContent = "x";
+                            gameboard.markSpot(i, j, p1.getId());
+                        }else{
+                            space.textContent = "o";
+                            gameboard.markSpot(i, j, p2.getId());
+                        }    
                     p1Turn = !p1Turn
                     space.setAttribute("class", "row" + i);
+                    }
                 })
 
                 board_grid.appendChild(space);
