@@ -131,17 +131,19 @@ const Gameboard = (function () {
                 }
             }
         }
+        statustext.textContent = "Tied game.";
         clearBoard();
         render.displayBoard(board);
-        console.log("Tie detected");
     }
 
     const printWin = () => {
         if(p1Win){
-            console.log("Player 1 won.")
+            statustext.textContent = "Player 1 wins!";
         }else if(p2Win){
-            console.log("Player 2 won.");
+            statustext.textContent = "Player 2 wins!";
         }
+        clearBoard();
+        render.displayBoard(board);
         return;
     }
 
@@ -233,4 +235,7 @@ const gameboard = new Gameboard;
 const render = new RenderHandler; 
 const p1 = createPlayer("Jane Doe", 1);
 const p2 = createPlayer("John Doe", 2);
+const wrapper = document.getElementById("wrapper");
+const statustext = document.createElement("p");
+wrapper.appendChild(statustext);
 render.displayBoard(gameboard.getBoard());
