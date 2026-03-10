@@ -1,3 +1,5 @@
+var p1Turn = true; 
+
 const Gameboard = (function () { 
     let board = [["e", "e", "e"], 
                  ["e", "e", "e"],
@@ -189,7 +191,15 @@ const RenderHandler = (function()  {
                 }
 
                 space.addEventListener("click", () =>{
-                        console.log(space.textContent);
+                    if(p1Turn){
+                        space.textContent = "x";
+                        gameboard.markSpot(i, j, p1.getId());
+                    }else{
+                        space.textContent = "o";
+                        gameboard.markSpot(i, j, p2.getId());
+                    }    
+                    p1Turn = !p1Turn
+                    space.setAttribute("class", "row" + i);
                 })
 
                 board_grid.appendChild(space);
@@ -213,18 +223,8 @@ function createPlayer(inputName, id){
     return {getName, getId, getWins, addWin, resetWins}
 }
 
-const board = new Gameboard;
+const gameboard = new Gameboard;
 const render = new RenderHandler; 
 const p1 = createPlayer("Jane Doe", 1);
 const p2 = createPlayer("John Doe", 2);
-render.displayBoard(board.getBoard());
-board.markSpot(0,0,p1.getId());
-board.markSpot(0,1,p2.getId());
-//board.markSpot(0,2,p1.getId());
-//board.markSpot(1,0,p2.getId());
-board.markSpot(1,1,p2.getId());
-board.markSpot(1,2,p1.getId());
-board.markSpot(2,0,p1.getId());
-board.markSpot(2,1,p1.getId());
-//board.markSpot(2,2,p2.getId());
-render.displayBoard(board.getBoard());
+render.displayBoard(gameboard.getBoard());
