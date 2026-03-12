@@ -191,19 +191,20 @@ const StateManager = (function () {
     const getP1WinCount = () => p1WinCount;
     const getP2WinCount = () => p2WinCount;
 
-    const setGameEnded = (flag) => {setGameEnded = flag;}
+    const setP1Turn = (flag) => p1Turn = flag;
+    const setGameEnded = (flag) => {gameEnded = flag;}
     const gameEnd = (winner) => {
-        p1Turn = true;
-        gameEnded = true;
+        p1Turn = false;
         if(winner == "P1"){
             p1WinCount += 1;
         }else if(winner == "P2"){
             p2WinCount += 1;
         }
+        gameEnded = false;
     }
     const nextTurn = () => {p1Turn = !p1Turn;}
 
-    return {getP1Turn, getGameEnded, getP1WinCount, getP2WinCount, setGameEnded, gameEnd, nextTurn}
+    return {getP1Turn, getGameEnded, getP1WinCount, getP2WinCount, setP1Turn, setGameEnded, gameEnd, nextTurn}
 })
 
 const RenderHandler = (function()  {
@@ -231,20 +232,6 @@ const RenderHandler = (function()  {
                     if((i >= 0 && i < board.length) &&
                        (j>= 0 && j < board.length) && 
                        (board[i][j] != "x" && gameboard.getBoard()[i][j] != "o")){     
-                        /*if(state.getP1Turn()){
-                            space.textContent = "x";
-                            space.style.color = "blue";
-                            turntext.textContent = p2.getName() + "'s turn.";
-                            turntext.style.color = "red"
-                            gameboard.markSpot(i, j, p1.getId());
-                        }else{
-                            space.textContent = "o";
-                            space.style.color = "red";
-                            turntext.textContent = p1.getName() + "'s turn.";
-                            turntext.style.color = "blue";
-                            gameboard.markSpot(i, j, p2.getId());
-                        } */
-
                         if(state.getP1Turn()){
                             gameboard.markSpot(i, j, p1.getId());
                         }else{
@@ -263,11 +250,10 @@ const RenderHandler = (function()  {
                                 space.textContent = "o";
                                 space.style.color = "red";
                                 turntext.textContent = p1.getName() + "'s turn.";
-                                turntext.style.color = "blue";
+                                turntext.style.color = "blue";   
                             }
+                            state.nextTurn();
                         }
-                        
-                        state.nextTurn();
                         space.setAttribute("class", "row" + i);
                     }
                 })
@@ -303,8 +289,16 @@ const p2 = createPlayer("Player 2", 2);
 const button_wrapper = document.getElementById("button-wrapper");
 const change_button = document.createElement("button");
 const reset_button = document.createElement("button");
-change_button.textContent = "Change Name"
+change_button.textContent = "Change Name";
 reset_button.textContent = "Reset Board";
+reset_button.addEventListener("click", () => {
+    turntext.textContent = p1.getName() + "'s turn."
+    turntext.style.color = "blue";
+    state.setP1Turn(true);
+    gameboard.clearBoard();
+    render.displayBoard(gameboard.getBoard());    
+});
+
 button_wrapper.appendChild(reset_button);
 button_wrapper.appendChild(change_button);  
 
