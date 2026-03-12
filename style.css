@@ -51,6 +51,7 @@ h1{
 
 #text-wrapper p, #button-wrapper p{
     font-size: 20px;
+    font-weight: bold;
 }
 
 #flex-wrapper{
@@ -78,6 +79,7 @@ h1{
 #board-grid > div{
     font-size: 70px;
     font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
     padding: 26px;
     padding-right: 50px;
     padding-left: 50px;
