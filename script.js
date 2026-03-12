@@ -327,6 +327,7 @@ resetGameButton.addEventListener("click", () => {
     p2.setName("Player 2")
     turntext.textContent = p1.getName() + "'s turn."
     turntext.style.color = "blue";
+    statustext.textContent = "";
     state.setP1Turn(true);
     gameboard.clearBoard();
     render.displayBoard(gameboard.getBoard());    
