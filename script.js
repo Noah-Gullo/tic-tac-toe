@@ -192,6 +192,11 @@ const StateManager = (function () {
     const getP1WinCount = () => p1WinCount;
     const getP2WinCount = () => p2WinCount;
 
+    const resetWins = () => {
+        p1WinCount = 0;
+        p2WinCount = 0;
+    }
+
     const setP1Turn = (flag) => p1Turn = flag;
     const setGameEnded = (flag) => {gameEnded = flag;}
     const gameEnd = (winner) => {
@@ -205,7 +210,7 @@ const StateManager = (function () {
     }
     const nextTurn = () => {p1Turn = !p1Turn;}
 
-    return {getP1Turn, getGameEnded, getP1WinCount, getP2WinCount, setP1Turn, setGameEnded, gameEnd, nextTurn}
+    return {getP1Turn, getGameEnded, getP1WinCount, getP2WinCount, resetWins, setP1Turn, setGameEnded, gameEnd, nextTurn}
 })
 
 const RenderHandler = (function()  {
@@ -268,15 +273,12 @@ const RenderHandler = (function()  {
 
 function createPlayer(inputName, id, symbol){
     let name = inputName;
-    let wins = 0;
-    
     const getName = () => name;
     const getId = () => "P" + id;
-    const getWins = () => wins;
     const setName = (newName) => name = newName;
 
     getId();
-    return {getName, getId, getWins, setName}
+    return {getName, getId, setName}
 }
 
 const gameboard = new Gameboard;
@@ -290,7 +292,8 @@ const changeNamesPopup = document.querySelector("dialog");
 const buttonWrapper = document.getElementById("button-wrapper");
 const changeButton = document.createElement("button");
 const saveNamesButton = document.getElementById("submit-button");
-const resetButton = document.createElement("button");
+const resetBoardButton = document.createElement("button");
+const resetGameButton = document.createElement("button");
 changeButton.textContent = "Change Name";
 changeButton.addEventListener("click", () => {
     changeNamesPopup.showModal();
@@ -317,8 +320,10 @@ saveNamesButton.addEventListener("click", () => {
     changeNamesPopup.close();
 });
 
-resetButton.textContent = "Reset Board";
-resetButton.addEventListener("click", () => {
+resetGameButton.textContent = "Reset Wins";
+resetGameButton.addEventListener("click", () => {
+    state.resetWins();
+    statustext.textContent = "";
     turntext.textContent = p1.getName() + "'s turn."
     turntext.style.color = "blue";
     state.setP1Turn(true);
@@ -326,7 +331,17 @@ resetButton.addEventListener("click", () => {
     render.displayBoard(gameboard.getBoard());    
 });
 
-buttonWrapper.appendChild(resetButton);
+resetBoardButton.textContent = "Reset Board";
+resetBoardButton.addEventListener("click", () => {
+    turntext.textContent = p1.getName() + "'s turn."
+    turntext.style.color = "blue";
+    state.setP1Turn(true);
+    gameboard.clearBoard();
+    render.displayBoard(gameboard.getBoard());    
+});
+
+buttonWrapper.appendChild(resetGameButton);
+buttonWrapper.appendChild(resetBoardButton);
 buttonWrapper.appendChild(changeButton);  
 
 const text_wrapper = document.getElementById("text-wrapper");
