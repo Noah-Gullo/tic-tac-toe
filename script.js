@@ -1,4 +1,4 @@
-var p1Turn = true; 
+
 
 const Gameboard = (function () { 
     let board = [["e", "e", "e"], 
@@ -18,12 +18,16 @@ const Gameboard = (function () {
             }else if(player == "P2"){
                 board[row][col] = "o";
             }
+            
+            if(statustext.textContent != ""){
+                statustext.textContent = "";
+            }
             checkWin();
         }
     }
 
     const clearBoard = () => {
-        p1Turn = true;
+        state.setP1Turn();
         for(let row = 0; row < board.length; row++){
             for(let col = 0; col < board.length; col++){
                 board[row][col] = "e";
@@ -133,17 +137,20 @@ const Gameboard = (function () {
             }
         }
         statustext.textContent = "Tied game.";
+        statustext.style.color = "black";
         clearBoard();
         render.displayBoard(board);
     }
 
-    const printWin = () => {
+    const handleWin = () => {
         if(p1Win){
             statustext.textContent = "Player 1 wins!";
             statustext.style.color = "blue";
+            state.incrementP1WinCount();
         }else if(p2Win){
             statustext.textContent = "Player 2 wins!";
             statustext.style.color = "red";
+            state.incrementP2WinCount();
         }
         clearBoard();
         render.displayBoard(board);
@@ -153,19 +160,19 @@ const Gameboard = (function () {
         let win = false;
         win = checkHorizontalWin();
         if(win){
-            printWin();
+            handleWin();
             return;
         }
 
         win = checkVerticalWin();
         if(win){
-            printWin();
+            handleWin();
             return;
         }
 
         win = checkDiagonalWin();
         if(win){
-            printWin();
+            handleWin();
             return;
         }
 
@@ -176,7 +183,20 @@ const Gameboard = (function () {
 })
 
 const StateManager = (function () {
+    let p1Turn = true; 
+    let p1WinCount = 0;
+    let p2WinCount = 0;
 
+    const getP1Turn = () => p1Turn;
+    const getP1WinCount = () => p1WinCount;
+    const getP2WinCount = () => p2WinCount;
+
+    const setP1Turn = () => {p1Turn = true;}
+    const nextTurn = () => {p1Turn = !p1Turn;}
+    const incrementP1WinCount = () => {p1WinCount += 1;}
+    const incrementP2WinCount = () => {p1WinCount += 1;}
+
+    return {getP1Turn, getP1WinCount, getP2WinCount, setP1Turn, nextTurn, incrementP1WinCount, incrementP2WinCount}
 })
 
 const RenderHandler = (function()  {
@@ -201,10 +221,11 @@ const RenderHandler = (function()  {
                 }
 
                 space.addEventListener("click", () =>{
+                    console.log(state.getP1Turn());
                     if((i >= 0 && i < board.length) &&
                        (j>= 0 && j < board.length) && 
                        (board[i][j] != "x" && gameboard.getBoard()[i][j] != "o")){
-                        if(p1Turn){
+                        if(state.getP1Turn()){
                             space.textContent = "x";
                             space.style.color = "blue";
                             turntext.textContent = p2.getName() + "'s turn.";
@@ -217,8 +238,9 @@ const RenderHandler = (function()  {
                             turntext.style.color = "blue";
                             gameboard.markSpot(i, j, p2.getId());
                         }    
-                        p1Turn = !p1Turn
-                    space.setAttribute("class", "row" + i);
+                        
+                        state.nextTurn();
+                        space.setAttribute("class", "row" + i);
                     }
                 })
 
@@ -245,7 +267,7 @@ function createPlayer(inputName, id, symbol){
 
 const gameboard = new Gameboard;
 const render = new RenderHandler; 
-const statemanager = new StateManager;
+const state = new StateManager;
 
 const p1 = createPlayer("Player 1", 1);
 const p2 = createPlayer("Player 2", 2);
