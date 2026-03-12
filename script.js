@@ -1,5 +1,3 @@
-
-
 const Gameboard = (function () { 
     let board = [["e", "e", "e"], 
                  ["e", "e", "e"],
@@ -221,10 +219,9 @@ const RenderHandler = (function()  {
                 }
 
                 space.addEventListener("click", () =>{
-                    console.log(state.getP1Turn());
                     if((i >= 0 && i < board.length) &&
                        (j>= 0 && j < board.length) && 
-                       (board[i][j] != "x" && gameboard.getBoard()[i][j] != "o")){
+                       (board[i][j] != "x" && gameboard.getBoard()[i][j] != "o")){     
                         if(state.getP1Turn()){
                             space.textContent = "x";
                             space.style.color = "blue";
@@ -237,8 +234,7 @@ const RenderHandler = (function()  {
                             turntext.textContent = p1.getName() + "'s turn.";
                             turntext.style.color = "blue";
                             gameboard.markSpot(i, j, p2.getId());
-                        }    
-                        
+                        } 
                         state.nextTurn();
                         space.setAttribute("class", "row" + i);
                     }
@@ -272,12 +268,12 @@ const state = new StateManager;
 const p1 = createPlayer("Player 1", 1);
 const p2 = createPlayer("Player 2", 2);
 
-const wrapper = document.getElementById("wrapper");
+const text_wrapper = document.getElementById("text-wrapper");
 const statustext = document.createElement("p");
 const turntext = document.createElement("p");
 turntext.textContent = p1.getName() + "'s turn.";
 turntext.style.color = "blue";
-wrapper.appendChild(statustext);
-wrapper.appendChild(turntext);
+text_wrapper.appendChild(statustext);
+text_wrapper.appendChild(turntext);
 
 render.displayBoard(gameboard.getBoard());
