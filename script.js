@@ -133,7 +133,8 @@ const Gameboard = (function () {
                 }
             }
         }
-        statustext.textContent = "Tied game. Player 1 has " + state.getP1WinCount() + " wins and Player 2 has " + state.getP2WinCount() + " win(s).";
+        statustext.textContent = "Tied game. " + p1.getName() + " has " + state.getP1WinCount() + 
+                                 " wins and " + p2.getName() + " has " + state.getP2WinCount() + " win(s).";
         statustext.style.color = "black";
         state.gameEnd("Tie");
         clearBoard();
@@ -144,11 +145,11 @@ const Gameboard = (function () {
         if(p1Win){
             statustext.style.color = "blue";
             state.gameEnd("P1");
-            statustext.textContent = "Player 1 wins! Player 1 has " + state.getP1WinCount() + " win(s).";
+            statustext.textContent = p1.getName() + " wins! " + p1.getName() + " has " + state.getP1WinCount() + " win(s).";
         }else if(p2Win){
             statustext.style.color = "red";
             state.gameEnd("P2");
-            statustext.textContent = "Player 2 wins! Player 2 has " + state.getP2WinCount() + " win(s).";
+            statustext.textContent = p2.getName() + " wins! " + p2.getName() + " has " + state.getP2WinCount() + " win(s).";
         }
         clearBoard();
         render.displayBoard(board);
@@ -304,7 +305,15 @@ saveNamesButton.addEventListener("click", () => {
     }else{
         turntext.textContent = p2.getName() + "'s turn."
     }
-    
+
+    if(state.getGameEnded()){
+        if(state.getP1Turn()){
+            statustext.textContent = p1.getName() + "'s turn."
+        }else{
+            statustext.textContent = p2.getName() + "'s turn."
+        }
+    }
+
     changeNamesPopup.close();
 });
 
