@@ -41,7 +41,7 @@ h1{
     border-radius: 8px;
 }
 
-#button-wrapper button:hover{
+#button-wrapper button:hover, dialog button:hover{
     background-color: var(--button-bg-hover-color);
 }
 
@@ -101,4 +101,35 @@ h1{
 
 #board-grid .row2{
     grid-row: 3 / 4;
+}
+
+dialog{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 40px;
+    border-radius: 15px;
+    border: none;
+}
+
+dialog input{
+    background-color: #d3d3d3;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    border: 2px solid #000000;
+}
+
+
+dialog button{
+    padding: 10px;
+    margin-top: 15px;
+    color: white;
+    border-radius: 10px;
+    border: none;
+    font-weight: bold;
+    background-color: var(--button-bg-color);
 }
