@@ -8,6 +8,8 @@
 
 :root{
     --bg-color: #ffffff;
+    --button-bg-color: #8999ff;
+    --button-bg-hover-color: #2e3b91;
 }
 
 h1{
@@ -21,7 +23,26 @@ h1{
 #text-wrapper, #button-wrapper{
     height: 60px;
     display: flex;
+    justify-content: center;
     align-items: center;
+}
+
+#button-wrapper{
+    gap: 10px;
+}
+
+#button-wrapper button{
+    padding: 15px;
+    background-color: var(--button-bg-color);
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    border: none;
+    border-radius: 8px;
+}
+
+#button-wrapper button:hover{
+    background-color: var(--button-bg-hover-color);
 }
 
 #text-wrapper{
@@ -33,7 +54,7 @@ h1{
 }
 
 #flex-wrapper{
-    height: 420px;
+    height: 450px;
     display: flex;
     align-items: center;
     justify-content: center;

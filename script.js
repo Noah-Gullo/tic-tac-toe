@@ -25,7 +25,6 @@ const Gameboard = (function () {
     }
 
     const clearBoard = () => {
-        state.setP1Turn();
         for(let row = 0; row < board.length; row++){
             for(let col = 0; col < board.length; col++){
                 board[row][col] = "e";
@@ -136,6 +135,7 @@ const Gameboard = (function () {
         }
         statustext.textContent = "Tied game.";
         statustext.style.color = "black";
+        state.gameEnd("Tie");
         clearBoard();
         render.displayBoard(board);
     }
@@ -144,11 +144,11 @@ const Gameboard = (function () {
         if(p1Win){
             statustext.textContent = "Player 1 wins!";
             statustext.style.color = "blue";
-            state.incrementP1WinCount();
+            state.gameEnd("P1");
         }else if(p2Win){
             statustext.textContent = "Player 2 wins!";
             statustext.style.color = "red";
-            state.incrementP2WinCount();
+            state.gameEnd("P2");
         }
         clearBoard();
         render.displayBoard(board);
@@ -182,19 +182,28 @@ const Gameboard = (function () {
 
 const StateManager = (function () {
     let p1Turn = true; 
+    let gameEnded = false;
     let p1WinCount = 0;
     let p2WinCount = 0;
 
     const getP1Turn = () => p1Turn;
+    const getGameEnded = () => gameEnded;
     const getP1WinCount = () => p1WinCount;
     const getP2WinCount = () => p2WinCount;
 
-    const setP1Turn = () => {p1Turn = true;}
+    const setGameEnded = (flag) => {setGameEnded = flag;}
+    const gameEnd = (winner) => {
+        p1Turn = true;
+        gameEnded = true;
+        if(winner == "P1"){
+            p1WinCount += 1;
+        }else if(winner == "P2"){
+            p2WinCount += 1;
+        }
+    }
     const nextTurn = () => {p1Turn = !p1Turn;}
-    const incrementP1WinCount = () => {p1WinCount += 1;}
-    const incrementP2WinCount = () => {p1WinCount += 1;}
 
-    return {getP1Turn, getP1WinCount, getP2WinCount, setP1Turn, nextTurn, incrementP1WinCount, incrementP2WinCount}
+    return {getP1Turn, getGameEnded, getP1WinCount, getP2WinCount, setGameEnded, gameEnd, nextTurn}
 })
 
 const RenderHandler = (function()  {
@@ -222,7 +231,7 @@ const RenderHandler = (function()  {
                     if((i >= 0 && i < board.length) &&
                        (j>= 0 && j < board.length) && 
                        (board[i][j] != "x" && gameboard.getBoard()[i][j] != "o")){     
-                        if(state.getP1Turn()){
+                        /*if(state.getP1Turn()){
                             space.textContent = "x";
                             space.style.color = "blue";
                             turntext.textContent = p2.getName() + "'s turn.";
@@ -234,7 +243,30 @@ const RenderHandler = (function()  {
                             turntext.textContent = p1.getName() + "'s turn.";
                             turntext.style.color = "blue";
                             gameboard.markSpot(i, j, p2.getId());
-                        } 
+                        } */
+
+                        if(state.getP1Turn()){
+                            gameboard.markSpot(i, j, p1.getId());
+                        }else{
+                            gameboard.markSpot(i, j, p2.getId());
+                        }
+                        
+                        if(state.getGameEnded()){ 
+                           state.setGameEnded(false);
+                        }else{
+                            if(state.getP1Turn()){
+                                space.textContent = "x";
+                                space.style.color = "blue";
+                                turntext.textContent = p2.getName() + "'s turn.";
+                                turntext.style.color = "red"
+                            }else{
+                                space.textContent = "o";
+                                space.style.color = "red";
+                                turntext.textContent = p1.getName() + "'s turn.";
+                                turntext.style.color = "blue";
+                            }
+                        }
+                        
                         state.nextTurn();
                         space.setAttribute("class", "row" + i);
                     }
@@ -267,6 +299,14 @@ const state = new StateManager;
 
 const p1 = createPlayer("Player 1", 1);
 const p2 = createPlayer("Player 2", 2);
+
+const button_wrapper = document.getElementById("button-wrapper");
+const change_button = document.createElement("button");
+const reset_button = document.createElement("button");
+change_button.textContent = "Change Name"
+reset_button.textContent = "Reset Board";
+button_wrapper.appendChild(reset_button);
+button_wrapper.appendChild(change_button);  
 
 const text_wrapper = document.getElementById("text-wrapper");
 const statustext = document.createElement("p");
