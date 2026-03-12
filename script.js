@@ -320,9 +320,16 @@ saveNamesButton.addEventListener("click", () => {
     changeNamesPopup.close();
 });
 
-resetGameButton.textContent = "Reset Wins";
+resetGameButton.textContent = "Reset Game";
 resetGameButton.addEventListener("click", () => {
     state.resetWins(); 
+    p1.setName("Player 1");
+    p2.setName("Player 2")
+    turntext.textContent = p1.getName() + "'s turn."
+    turntext.style.color = "blue";
+    state.setP1Turn(true);
+    gameboard.clearBoard();
+    render.displayBoard(gameboard.getBoard());    
 });
 
 resetBoardButton.textContent = "Reset Board";
