@@ -133,7 +133,7 @@ const Gameboard = (function () {
                 }
             }
         }
-        statustext.textContent = "Tied game. Player 1 has " + state.getP1WinCount() + "wins and Player 2 has " + state.getP2WinCount() + " win(s).";
+        statustext.textContent = "Tied game. Player 1 has " + state.getP1WinCount() + " wins and Player 2 has " + state.getP2WinCount() + " win(s).";
         statustext.style.color = "black";
         state.gameEnd("Tie");
         clearBoard();
@@ -290,6 +290,10 @@ const button_wrapper = document.getElementById("button-wrapper");
 const change_button = document.createElement("button");
 const reset_button = document.createElement("button");
 change_button.textContent = "Change Name";
+change_button.addEventListener("click", () => {
+    document.querySelector("dialog").showModal();
+});
+
 reset_button.textContent = "Reset Board";
 reset_button.addEventListener("click", () => {
     turntext.textContent = p1.getName() + "'s turn."
