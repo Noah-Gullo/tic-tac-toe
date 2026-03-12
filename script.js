@@ -133,7 +133,7 @@ const Gameboard = (function () {
                 }
             }
         }
-        statustext.textContent = "Tied game.";
+        statustext.textContent = "Tied game. Player 1 has " + state.getP1WinCount() + "wins and Player 2 has " + state.getP2WinCount() + " win(s).";
         statustext.style.color = "black";
         state.gameEnd("Tie");
         clearBoard();
@@ -142,13 +142,13 @@ const Gameboard = (function () {
 
     const handleWin = () => {
         if(p1Win){
-            statustext.textContent = "Player 1 wins!";
             statustext.style.color = "blue";
             state.gameEnd("P1");
+            statustext.textContent = "Player 1 wins! Player 1 has " + state.getP1WinCount() + " win(s).";
         }else if(p2Win){
-            statustext.textContent = "Player 2 wins!";
             statustext.style.color = "red";
             state.gameEnd("P2");
+            statustext.textContent = "Player 2 wins! Player 2 has " + state.getP2WinCount() + " win(s).";
         }
         clearBoard();
         render.displayBoard(board);
